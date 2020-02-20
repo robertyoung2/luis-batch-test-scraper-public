@@ -15,6 +15,7 @@ browser = webdriver.Chrome(executable_path=config.home_path, chrome_options=opti
 
 
 def login_luis():
+
     browser.get("https://eu.luis.ai")
     time.sleep(3)
     browser.find_element_by_link_text('Sign in').click()
@@ -28,6 +29,18 @@ def login_luis():
     ActionChains(browser).send_keys(Keys.ESCAPE).perform()
     browser.find_element_by_link_text('myapp_v01').click()
     time.sleep(5)
+    buttons = browser.find_elements_by_class_name('nav-section')
+    counter = 0
+
+    for b in buttons:
+        if counter == 1:
+            b.click()
+        counter += 1
 
 
-login_luis()
+def main():
+    login_luis()
+
+
+if __name__ == '__main__':
+    main()
