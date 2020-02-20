@@ -11,7 +11,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 option = webdriver.ChromeOptions()
 option.add_argument(" - incognito")
 
-browser = webdriver.Chrome(executable_path='~/chromedriver', chrome_options=option)
+browser = webdriver.Chrome(executable_path=config.home_path, chrome_options=option)
 
 
 def login_luis():
