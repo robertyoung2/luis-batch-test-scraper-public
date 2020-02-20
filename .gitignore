@@ -1,8 +1,9 @@
-# IntelliJ files
+# File extensions to ignore
 *.xml
 *.iml
 *.idea
 *.DS_Store
+*.pyc
 
 # Ignore venv
 *venv
