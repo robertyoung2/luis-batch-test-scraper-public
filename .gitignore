@@ -3,3 +3,10 @@
 *.iml
 *.idea
 *.DS_Store
+
+# Ignore venv
+*venv
+
+# Config File
+
+config.py
