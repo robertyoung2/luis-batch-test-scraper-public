@@ -11,7 +11,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 option = webdriver.ChromeOptions()
 option.add_argument(" - incognito")
 
-browser = webdriver.Chrome(executable_path=config.home_path, chrome_options=option)
+browser = webdriver.Chrome(executable_path=config.home_path, options=option)
 
 
 def login_luis():
@@ -26,6 +26,9 @@ def login_luis():
     browser.find_element_by_id('i0118').send_keys(config.password)
     browser.find_element_by_id('idSIButton9').click()
     time.sleep(5)
+
+
+def batch_test_open():
     ActionChains(browser).send_keys(Keys.ESCAPE).perform()
     browser.find_element_by_link_text('myapp_v01').click()
     time.sleep(5)
@@ -37,9 +40,13 @@ def login_luis():
             b.click()
         counter += 1
 
+    time.sleep(5)
+    browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
+
 
 def main():
     login_luis()
+    batch_test_open()
 
 
 if __name__ == '__main__':
