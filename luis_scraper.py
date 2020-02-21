@@ -24,15 +24,14 @@ def login_luis():
     """
 
     browser.get("https://eu.luis.ai")
-    time.sleep(3)
+    WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.LINK_TEXT, "Sign in")))
     browser.find_element_by_link_text('Sign in').click()
-    time.sleep(3)
+    WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.ID, "idSIButton9")))
     browser.find_element_by_id('i0116').send_keys(config.username)
     browser.find_element_by_id('idSIButton9').click()
-    time.sleep(3)
+    WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.ID, "idSIButton9")))
     browser.find_element_by_id('i0118').send_keys(config.password)
     browser.find_element_by_id('idSIButton9').click()
-    time.sleep(5)
 
 
 def batch_test_open():
@@ -44,12 +43,9 @@ def batch_test_open():
 
     ActionChains(browser).send_keys(Keys.ESCAPE).perform()
     browser.find_element_by_link_text('myapp_v01').click()
-    time.sleep(5)
     buttons = browser.find_elements_by_class_name('nav-section')
     buttons[1].click()
-    time.sleep(5)
     browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
-    time.sleep(5)
 
 
 def batch_test_run():
@@ -62,7 +58,6 @@ def batch_test_run():
 
     for test in batch_run_button:
         test.click()
-        time.sleep(5)
 
 
 def main():
@@ -72,8 +67,8 @@ def main():
     :return: None
     """
     login_luis()
-    batch_test_open()
-    batch_test_run()
+    # batch_test_open()
+    # batch_test_run()
 
 
 if __name__ == '__main__':
