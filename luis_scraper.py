@@ -29,17 +29,12 @@ def login_luis():
 
 
 def batch_test_open():
+    
     ActionChains(browser).send_keys(Keys.ESCAPE).perform()
     browser.find_element_by_link_text('myapp_v01').click()
     time.sleep(5)
     buttons = browser.find_elements_by_class_name('nav-section')
-    counter = 0
-
-    for b in buttons:
-        if counter == 1:
-            b.click()
-        counter += 1
-
+    buttons[1].click()
     time.sleep(5)
     browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
 
