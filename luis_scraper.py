@@ -40,11 +40,19 @@ def batch_test_open():
 
     :return: None
     """
+    try:
+        WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "cdk-overlay-pane")))
+        ActionChains(browser).send_keys(Keys.ESCAPE).perform()
+    except:
+        print("No migration pop-up")
 
-    ActionChains(browser).send_keys(Keys.ESCAPE).perform()
-    browser.find_element_by_link_text('myapp_v01').click()
+    WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.LINK_TEXT, config.app_name)))
+    browser.find_element_by_link_text(config.app_name).click()
+    WebDriverWait(browser, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'nav-section')))
     buttons = browser.find_elements_by_class_name('nav-section')
     buttons[1].click()
+    WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), '
+                                                                                '"Batch testing")]')))
     browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
 
 
@@ -67,7 +75,7 @@ def main():
     :return: None
     """
     login_luis()
-    # batch_test_open()
+    batch_test_open()
     # batch_test_run()
 
 
