@@ -16,8 +16,11 @@ browser = webdriver.Chrome(executable_path=config.home_path, options=option)
 
 def login_luis():
     """
+    Logs in to EU Luis portal using username and password
 
-    :return:
+    :parameter: config.username is the username var loaded from the config file
+    :parameter: config.password is the password var loaded from the config file
+    :return: None
     """
 
     browser.get("https://eu.luis.ai")
@@ -34,8 +37,9 @@ def login_luis():
 
 def batch_test_open():
     """
+    Navigates Luis portal and opens the batch testing pane
 
-    :return:
+    :return: None
     """
 
     ActionChains(browser).send_keys(Keys.ESCAPE).perform()
@@ -50,8 +54,9 @@ def batch_test_open():
 
 def batch_test_run():
     """
+    Runs all available batch tests in the batch testing pane
 
-    :return:
+    :return: none
     """
     batch_run_button = browser.find_elements_by_xpath('//button[contains(text(), "Run")]')
 
@@ -62,8 +67,9 @@ def batch_test_run():
 
 def main():
     """
+    Runs all functions
 
-    :return:
+    :return: None
     """
     login_luis()
     batch_test_open()
