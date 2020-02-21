@@ -15,6 +15,10 @@ browser = webdriver.Chrome(executable_path=config.home_path, options=option)
 
 
 def login_luis():
+    """
+
+    :return:
+    """
 
     browser.get("https://eu.luis.ai")
     time.sleep(3)
@@ -29,7 +33,11 @@ def login_luis():
 
 
 def batch_test_open():
-    
+    """
+
+    :return:
+    """
+
     ActionChains(browser).send_keys(Keys.ESCAPE).perform()
     browser.find_element_by_link_text('myapp_v01').click()
     time.sleep(5)
@@ -37,11 +45,29 @@ def batch_test_open():
     buttons[1].click()
     time.sleep(5)
     browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
+    time.sleep(5)
+
+
+def batch_test_run():
+    """
+
+    :return:
+    """
+    batch_run_button = browser.find_elements_by_xpath('//button[contains(text(), "Run")]')
+
+    for test in batch_run_button:
+        test.click()
+        time.sleep(5)
 
 
 def main():
+    """
+
+    :return:
+    """
     login_luis()
     batch_test_open()
+    batch_test_run()
 
 
 if __name__ == '__main__':
