@@ -62,10 +62,24 @@ def batch_test_run():
 
     :return: none
     """
+    WebDriverWait(browser, 15).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), ''"Run")]')))
     batch_run_button = browser.find_elements_by_xpath('//button[contains(text(), "Run")]')
-
+    count = 0
     for test in batch_run_button:
         test.click()
+        time.sleep(5)
+
+
+def batch_tests_open():
+    batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
+
+    for i in range(len(batch_results_button)):
+        batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
+        batch_results_button[i].click()
+        time.sleep(3)
+        back = browser.find_element_by_xpath('//button[contains(text(), "Back to list")]')
+        back.click()
+        time.sleep(3)
 
 
 def main():
@@ -76,7 +90,8 @@ def main():
     """
     login_luis()
     batch_test_open()
-    # batch_test_run()
+    batch_test_run()
+    batch_tests_open()
 
 
 if __name__ == '__main__':
