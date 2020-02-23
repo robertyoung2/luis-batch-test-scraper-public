@@ -1,12 +1,15 @@
-import time
 import config
+from variable_names import list_of_headers, intent_titles
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+import pandas as pd
+import numpy as np
 
 option = webdriver.ChromeOptions()
 option.add_argument(" - incognito")
@@ -66,20 +69,48 @@ def batch_test_run():
     batch_run_button = browser.find_elements_by_xpath('//button[contains(text(), "Run")]')
     count = 0
     for test in batch_run_button:
+        if count == 1:
+            break
         test.click()
         time.sleep(5)
+        count += 1
 
 
-def batch_tests_open():
+def batch_tests_results():
+    """
+
+    :return:
+    """
     batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
 
     for i in range(len(batch_results_button)):
         batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
+        print("Batch Test Intent Results: " + batch_results_button[i].text)
         batch_results_button[i].click()
         time.sleep(3)
         back = browser.find_element_by_xpath('//button[contains(text(), "Back to list")]')
+
+        for intent in intent_titles:
+            try:
+                xpath_string = '//*[contains(@title, "' + intent + '")]'
+                batch_result = browser.find_element_by_xpath(xpath_string)
+                intent, score = batch_result.text.split()
+                print("Intent - ", intent)
+                print("Score - ", score[1:-1])
+            except NoSuchElementException:
+                print(intent, "not in batch test, continuing to iterate over Intents provided")
+
         back.click()
         time.sleep(3)
+
+
+def save_results():
+    """
+    Go through
+    :return:
+    """
+
+
 
 
 def main():
@@ -91,7 +122,7 @@ def main():
     login_luis()
     batch_test_open()
     batch_test_run()
-    batch_tests_open()
+    batch_tests_results()
 
 
 if __name__ == '__main__':
