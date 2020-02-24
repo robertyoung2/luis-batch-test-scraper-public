@@ -6,6 +6,10 @@ Python application that:
 * Opens the batch testing panel and runs all batch tests (maximum of 10)
 * Opens the results of each batch test and saves to a csv or json
 
+## To-Do
+
+* Create a text outpile file listing which Intents were not covered in the list of 10 batch tests (if more than 10 batch tests required)
+
 ## Known Issues
 
 * Timeout error if webpage does not load - add logic to reload current page and try step again
@@ -16,3 +20,4 @@ Python application that:
 * Packaged as a full interactive application
 * Option to load in new batch tests
 * Option to remove batch tests 
+
