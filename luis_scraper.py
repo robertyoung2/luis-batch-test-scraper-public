@@ -9,7 +9,6 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import pandas as pd
-import numpy as np
 
 option = webdriver.ChromeOptions()
 option.add_argument(" - incognito")
@@ -67,54 +66,56 @@ def batch_test_run():
     """
     WebDriverWait(browser, 15).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), ''"Run")]')))
     batch_run_button = browser.find_elements_by_xpath('//button[contains(text(), "Run")]')
-    count = 0
+    # count = 0
     for test in batch_run_button:
-        if count == 1:
-            break
+        # if count == 3:
+        #     break
         test.click()
         time.sleep(5)
-        count += 1
+        # count += 1
 
 
 def batch_tests_results():
     """
-
+    To-do:
+    * save intent title to csv
+    * save size of batch test to csv
+    * work out how to insert series into nan columns (for second run of batch tests!)
     :return:
     """
+
+    df = pd.DataFrame(columns=list_of_headers)
     batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
 
     for i in range(len(batch_results_button)):
         scores_dict = {}
         batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
-        print("Batch Test Intent Results: " + batch_results_button[i].text)
         batch_results_button[i].click()
         time.sleep(3)
         back = browser.find_element_by_xpath('//button[contains(text(), "Back to list")]')
+        title_batch_test = browser.find_element_by_xpath('//h3[contains(text(), "Dataset")]').text
+        title_batch_test = title_batch_test.split()
+        title_batch_test = title_batch_test[1][1:-1]
+        scores_dict['Intent'] = title_batch_test
+        utterances = browser.find_element_by_xpath('//*[contains(text(), "utterances passed")]').text[1:-1].split()
+        utterances = utterances[0].split('/')
+        utterances = utterances[1]
+        scores_dict['Size'] = utterances
 
         for intent_entity in intent_entity_titles:
 
             try:
                 xpath_string = '//*[@title="' + intent_entity + '"]'
                 batch_result = browser.find_element_by_xpath(xpath_string)
-                print(batch_result.text)
                 element, score = batch_result.text.split("(")
                 element = element.strip()
                 scores_dict[element] = "=" + (score[:-1])
             except (NoSuchElementException, ValueError):
                 print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
 
-        save_results(scores_dict)
+        df = df.append(scores_dict, ignore_index=True)
         back.click()
         time.sleep(3)
-
-
-def save_results(scores_dict):
-    """
-    Go through
-    :return:
-    """
-    df = pd.DataFrame(columns=list_of_headers)
-    df = df.append(scores_dict, ignore_index=True)
     df.to_csv("tester.csv", index=False)
 
 
