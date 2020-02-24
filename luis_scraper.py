@@ -84,6 +84,7 @@ def batch_tests_results():
     batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
 
     for i in range(len(batch_results_button)):
+        scores_dict = {}
         batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
         print("Batch Test Intent Results: " + batch_results_button[i].text)
         batch_results_button[i].click()
@@ -95,20 +96,26 @@ def batch_tests_results():
                 xpath_string = '//*[contains(@title, "' + intent + '")]'
                 batch_result = browser.find_element_by_xpath(xpath_string)
                 intent, score = batch_result.text.split()
-                print("Intent - ", intent)
-                print("Score - ", score[1:-1])
+                # print("Intent - ", intent)
+                # print("Score - ", score[1:-1])
+                scores_dict[intent] = "=" + (score[1:-1])
+
             except NoSuchElementException:
                 print(intent, "not in batch test, continuing to iterate over Intents provided")
-
+        save_results(scores_dict)
         back.click()
         time.sleep(3)
 
 
-def save_results():
+def save_results(scores_dict):
     """
     Go through
     :return:
     """
+    df = pd.DataFrame(columns=list_of_headers)
+    df = df.append(scores_dict, ignore_index=True)
+    df.to_csv("tester.csv")
+
 
 
 
