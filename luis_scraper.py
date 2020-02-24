@@ -58,19 +58,15 @@ def batch_test_open():
 
 def batch_test_run():
     """
-    Runs all available batch tests in the batch testing pane
+    Runs all available batch tests in the batch testing panel
 
     :return: none
     """
     WebDriverWait(browser, 15).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), ''"Run")]')))
     batch_run_button = browser.find_elements_by_xpath('//button[contains(text(), "Run")]')
-    count = 0
     for test in batch_run_button:
-        if count == 1:
-            break
         test.click()
         time.sleep(5)
-        count += 1
 
 
 def batch_tests_results():
