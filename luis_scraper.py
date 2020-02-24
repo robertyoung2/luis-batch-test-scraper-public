@@ -24,7 +24,6 @@ def login_luis():
     :parameter: config.password is the password var loaded from the config file
     :return: None
     """
-
     browser.get("https://eu.luis.ai")
     WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.LINK_TEXT, "Sign in")))
     browser.find_element_by_link_text('Sign in').click()
@@ -83,7 +82,6 @@ def batch_tests_results():
     * work out how to insert series into nan columns (for second run of batch tests!)
     :return:
     """
-
     df = pd.DataFrame(columns=list_of_headers)
     batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
 
@@ -103,7 +101,6 @@ def batch_tests_results():
         scores_dict['Size'] = utterances
 
         for intent_entity in intent_entity_titles:
-
             try:
                 xpath_string = '//*[@title="' + intent_entity + '"]'
                 batch_result = browser.find_element_by_xpath(xpath_string)
