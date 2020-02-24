@@ -1,5 +1,5 @@
 import config
-from variable_names import list_of_headers, intent_titles
+from variable_names import list_of_headers, intent_entity_titles
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -91,17 +91,18 @@ def batch_tests_results():
         time.sleep(3)
         back = browser.find_element_by_xpath('//button[contains(text(), "Back to list")]')
 
-        for intent in intent_titles:
-            try:
-                xpath_string = '//*[contains(@title, "' + intent + '")]'
-                batch_result = browser.find_element_by_xpath(xpath_string)
-                intent, score = batch_result.text.split()
-                # print("Intent - ", intent)
-                # print("Score - ", score[1:-1])
-                scores_dict[intent] = "=" + (score[1:-1])
+        for intent_entity in intent_entity_titles:
 
-            except NoSuchElementException:
-                print(intent, "not in batch test, continuing to iterate over Intents provided")
+            try:
+                xpath_string = '//*[@title="' + intent_entity + '"]'
+                batch_result = browser.find_element_by_xpath(xpath_string)
+                print(batch_result.text)
+                element, score = batch_result.text.split("(")
+                element = element.strip()
+                scores_dict[element] = "=" + (score[:-1])
+            except (NoSuchElementException, ValueError):
+                print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
+
         save_results(scores_dict)
         back.click()
         time.sleep(3)
@@ -114,10 +115,7 @@ def save_results(scores_dict):
     """
     df = pd.DataFrame(columns=list_of_headers)
     df = df.append(scores_dict, ignore_index=True)
-    df.to_csv("tester.csv")
-
-
-
+    df.to_csv("tester.csv", index=False)
 
 
 def main():
