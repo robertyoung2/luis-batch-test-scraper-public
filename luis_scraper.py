@@ -1,5 +1,5 @@
 import config
-from variable_names import list_of_headers, intent_entity_titles
+from variable_names import list_of_headers, intent_entity_titles, batch_test_set
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -75,6 +75,7 @@ def batch_tests_results():
     """
     df = pd.DataFrame(columns=list_of_headers)
     batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
+    loaded_batch_tests = []
 
     for i in range(len(batch_results_button)):
         scores_dict = {}
@@ -83,6 +84,7 @@ def batch_tests_results():
         time.sleep(3)
         back = browser.find_element_by_xpath('//button[contains(text(), "Back to list")]')
         title_batch_test = browser.find_element_by_xpath('//h3[contains(text(), "Dataset")]').text.split()[1][1:-1]
+        loaded_batch_tests.append(title_batch_test)
         scores_dict['Intent'] = title_batch_test
         utterances = browser.find_element_by_xpath('//*[contains(text(), "utterances passed")]').text[1:-1].split()
         utterances = utterances[0].split('/')[1]
@@ -96,12 +98,27 @@ def batch_tests_results():
                 element = element.strip()
                 scores_dict[element] = "=" + (score[:-1])
             except (NoSuchElementException, ValueError):
-                print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
+                pass
+                # print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
 
+        remaining_batch_tests(loaded_batch_tests)
         df = df.append(scores_dict, ignore_index=True)
         back.click()
         time.sleep(3)
-    df.to_csv("tester.csv", index=False)
+
+    df.to_csv("batch_test_results.csv", index=False)
+
+
+def remaining_batch_tests(loaded_batch_tests):
+    """
+    :param loaded_batch_tests:
+    :return:
+    """
+
+    remaining_tests = batch_test_set - set(loaded_batch_tests)
+    with open('remaining_tests.txt', mode='w') as outfile:
+        for batch_test in remaining_tests:
+            outfile.write("%s\n" % batch_test)
 
 
 def main():
