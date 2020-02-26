@@ -1,6 +1,6 @@
 import config
-from variable_names import list_of_headers, intent_entity_titles, batch_test_set
 import time
+from variable_names import list_of_headers, intent_entity_titles, batch_test_set
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -66,12 +66,17 @@ def batch_test_run():
     batch_run_button = browser.find_elements_by_xpath('//button[contains(text(), "Run")]')
     for test in batch_run_button:
         test.click()
-        time.sleep(5)
+        time.sleep(4)
 
 
 def batch_tests_results():
     """
-    :return:
+    Opens each batch test and extracts the results information from it. NB: This goes through each of the intents in
+    the 'overview' table of links and extracts the score. Eg. (78/123). It does not currently extract the confusion
+    matrix scores. If required, the code can be adapted to do this. It then outputs these results to csv file.
+    The list of intents and entities, csv headers and all batch tests to be run should be provided in variable_names.py.
+
+    :return: None
     """
     df = pd.DataFrame(columns=list_of_headers)
     batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
@@ -98,23 +103,24 @@ def batch_tests_results():
                 element = element.strip()
                 scores_dict[element] = "=" + (score[:-1])
             except (NoSuchElementException, ValueError):
-                pass
-                # print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
+                print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
 
         remaining_batch_tests(loaded_batch_tests)
         df = df.append(scores_dict, ignore_index=True)
         back.click()
-        time.sleep(3)
+        time.sleep(1)
 
     df.to_csv("batch_test_results.csv", index=False)
 
 
 def remaining_batch_tests(loaded_batch_tests):
     """
-    :param loaded_batch_tests:
-    :return:
-    """
+    Uses the batch tests names set from variable_names.py to determine which batch tests have been run and which remain.
+    The remaining batch tests are outputted to a text file 'remaining_tests.txt' for the user to review.
 
+    :param loaded_batch_tests:
+    :return: None
+    """
     remaining_tests = batch_test_set - set(loaded_batch_tests)
     with open('remaining_tests.txt', mode='w') as outfile:
         for batch_test in remaining_tests:
