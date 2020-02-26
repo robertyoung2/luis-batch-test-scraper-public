@@ -4,6 +4,8 @@
 *.idea
 *.DS_Store
 *.pyc
+*.txt
+*.csv
 
 # Ignore venv
 *venv
