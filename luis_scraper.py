@@ -1,5 +1,6 @@
 import config
 import time
+import pandas as pd
 from variable_names import list_of_headers, intent_entity_titles, batch_test_set
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -8,7 +9,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-import pandas as pd
 
 option = webdriver.ChromeOptions()
 option.add_argument(" - incognito")
@@ -79,13 +79,13 @@ def batch_tests_results():
     :return: None
     """
     df = pd.DataFrame(columns=list_of_headers)
-    batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
     loaded_batch_tests = []
+    batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
 
-    for i in range(len(batch_results_button)):
+    for results_number in range(len(batch_results_button)):
         scores_dict = {}
         batch_results_button = browser.find_elements_by_xpath('//a[contains(text(), "See results")]')
-        batch_results_button[i].click()
+        batch_results_button[results_number].click()
         time.sleep(3)
         back = browser.find_element_by_xpath('//button[contains(text(), "Back to list")]')
         title_batch_test = browser.find_element_by_xpath('//h3[contains(text(), "Dataset")]').text.split()[1][1:-1]
@@ -105,11 +105,10 @@ def batch_tests_results():
             except (NoSuchElementException, ValueError):
                 print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
 
-        remaining_batch_tests(loaded_batch_tests)
         df = df.append(scores_dict, ignore_index=True)
+        remaining_batch_tests(loaded_batch_tests)
         back.click()
         time.sleep(1)
-
     df.to_csv("batch_test_results.csv", index=False)
 
 
