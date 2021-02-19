@@ -45,7 +45,7 @@ def login_luis():
 def authoring_resource():
 
     WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, '//*[text()="Welcome to the Language Understanding Intelligent Service (LUIS)!"]')))
-    browser.find_element_by_id('Dropdown102-option').click()
+    browser.find_element_by_xpath('//*[text()="Select subscription"]').click()
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Search subscription"]')))
     browser.find_element_by_xpath('//*[@title="%s"]' % config.subscription).click()
     browser.find_element_by_id('id__103').click()
@@ -63,7 +63,6 @@ def batch_test_open():
     :return: None
     """
 
-    # WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.LINK_TEXT, config.app_name)))
     WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[text()="%s"]' % config.app_name)))
     browser.find_element_by_xpath('//button[text()="%s"]' % config.app_name).click()
 
@@ -81,11 +80,9 @@ def batch_test_open():
 
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//span[text()="Test"]')))
     browser.find_element_by_xpath('//span[text()="Test"]').click()
-    # WebDriverWait(browser, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'nav-section')))
-
-    WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), '
+    WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//span[contains(text(), '
                                                                                 '"Batch testing")]')))
-    browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
+    browser.find_element_by_xpath('//span[contains(text(), "Batch testing")]').click()
 
 
 def batch_test_run():
@@ -94,11 +91,11 @@ def batch_test_run():
 
     :return: none
     """
-    WebDriverWait(browser, 15).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), ''"Run")]')))
-    batch_run_button = browser.find_elements_by_xpath('//button[contains(text(), "Run")]')
-    for test in batch_run_button:
-        test.click()
-        time.sleep(4)
+    WebDriverWait(browser, 15).until(EC.visibility_of_element_located((By.XPATH, '//span[contains(text(), ''"get_job_information")]')))
+    batch_run_button = browser.find_elements_by_xpath('//span[(text()="Run")]')
+    for index, button in enumerate(batch_run_button):
+        if index > 0:
+            button.click()
 
 
 def batch_tests_results():
