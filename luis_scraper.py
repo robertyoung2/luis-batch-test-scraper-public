@@ -30,9 +30,18 @@ def login_luis():
     browser.find_element_by_id('i0116').send_keys(config.username)
     browser.find_element_by_id('idSIButton9').click()
     WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.ID, "idSIButton9")))
+
+    if browser.find_element_by_link_text('Other ways to sign in'):
+        browser.find_element_by_link_text('Other ways to sign in').click()
+        WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, "//div[@aria-label='Use my password']")))
+        browser.find_element_by_xpath("//div[@aria-label='Use my password']").click()
+
+    WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.ID, "idSIButton9")))
     browser.find_element_by_id('i0118').send_keys(config.password)
     browser.find_element_by_id('idSIButton9').click()
 
+def authoring_resource():
+    pass
 
 def batch_test_open():
     """
