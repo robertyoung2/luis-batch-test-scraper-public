@@ -3,6 +3,7 @@ import time
 import pandas as pd
 from variable_names import list_of_headers, intent_entity_titles, batch_test_set
 from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -41,7 +42,13 @@ def login_luis():
     browser.find_element_by_id('idSIButton9').click()
 
 def authoring_resource():
-    pass
+
+    WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, "Dialog58-title")))
+    browser.find_element_by_id('Dropdown102-option').click()
+    WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Search subscription"]')))
+    browser.find_element_by_xpath('//*[@title="%s"]' % config.subscription).click()
+    browser.find_element_by_id('id__103').click()
+    exit()
 
 def batch_test_open():
     """
@@ -142,6 +149,7 @@ def main():
     :return: None
     """
     login_luis()
+    authoring_resource()
     batch_test_open()
     batch_test_run()
     batch_tests_results()
