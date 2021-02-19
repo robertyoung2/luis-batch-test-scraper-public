@@ -62,20 +62,31 @@ def batch_test_open():
 
     :return: None
     """
+
+    # WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.LINK_TEXT, config.app_name)))
+    WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[text()="%s"]' % config.app_name)))
+    browser.find_element_by_xpath('//button[text()="%s"]' % config.app_name).click()
+
     try:
-        WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "cdk-overlay-pane")))
+        WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//*[text()="How to create an effective LUIS app"]')))
         ActionChains(browser).send_keys(Keys.ESCAPE).perform()
     except:
-        print("No migration pop-up")
+        print("No intro pop-up")
 
-    WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.LINK_TEXT, config.app_name)))
-    browser.find_element_by_link_text(config.app_name).click()
-    WebDriverWait(browser, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'nav-section')))
-    buttons = browser.find_elements_by_class_name('nav-section')
-    buttons[1].click()
-    WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), '
-                                                                                '"Batch testing")]')))
-    browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
+    try:
+        WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//*[text()="Upgrade your composite entities"]')))
+        browser.find_element_by_xpath('//span[text()="Remind me later"]').click()
+    except:
+        print("No composite entities pop-up")
+
+    exit()
+    # browser.find_element_by_link_text(config.app_name).click()
+    # WebDriverWait(browser, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'nav-section')))
+    # buttons = browser.find_elements_by_class_name('nav-section')
+    # buttons[1].click()
+    # WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), '
+    #                                                                             '"Batch testing")]')))
+    # browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
 
 
 def batch_test_run():
