@@ -44,7 +44,7 @@ def login_luis():
 
 def authoring_resource():
 
-    WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, "Dialog58-title")))
+    WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, '//*[text()="Welcome to the Language Understanding Intelligent Service (LUIS)!"]')))
     browser.find_element_by_id('Dropdown102-option').click()
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Search subscription"]')))
     browser.find_element_by_xpath('//*[@title="%s"]' % config.subscription).click()
@@ -79,14 +79,13 @@ def batch_test_open():
     except:
         print("No composite entities pop-up")
 
-    exit()
-    # browser.find_element_by_link_text(config.app_name).click()
+    WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//span[text()="Test"]')))
+    browser.find_element_by_xpath('//span[text()="Test"]').click()
     # WebDriverWait(browser, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'nav-section')))
-    # buttons = browser.find_elements_by_class_name('nav-section')
-    # buttons[1].click()
-    # WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), '
-    #                                                                             '"Batch testing")]')))
-    # browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
+
+    WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), '
+                                                                                '"Batch testing")]')))
+    browser.find_element_by_xpath('//button[contains(text(), "Batch testing")]').click()
 
 
 def batch_test_run():
