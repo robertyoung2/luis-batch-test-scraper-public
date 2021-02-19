@@ -41,6 +41,7 @@ def login_luis():
     browser.find_element_by_id('i0118').send_keys(config.password)
     browser.find_element_by_id('idSIButton9').click()
 
+
 def authoring_resource():
 
     WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, "Dialog58-title")))
@@ -48,7 +49,12 @@ def authoring_resource():
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Search subscription"]')))
     browser.find_element_by_xpath('//*[@title="%s"]' % config.subscription).click()
     browser.find_element_by_id('id__103').click()
-    exit()
+
+    WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Select an authoring resource ..."]')))
+    browser.find_element_by_xpath('//*[@placeholder="Select an authoring resource ..."]').click()
+    browser.find_element_by_xpath('//*[text()="%s"]' % config.authoring_resource).click()
+    browser.find_element_by_xpath('//*[text()="Done"]').click()
+
 
 def batch_test_open():
     """
