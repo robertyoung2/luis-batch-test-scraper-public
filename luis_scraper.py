@@ -12,7 +12,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 option = webdriver.ChromeOptions()
 option.add_argument(" - incognito")
-browser = webdriver.Chrome(executable_path=config.home_path, options=option)
+# browser = webdriver.Chrome(executable_path=config.home_path, options=option)
+browser = webdriver.Chrome(options=option)
 
 
 def login_luis():
@@ -23,9 +24,8 @@ def login_luis():
     :parameter: config.password is the password var loaded from the config file
     :return: None
     """
-    browser.get("https://eu.luis.ai")
-    WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.LINK_TEXT, "Sign in")))
-    browser.find_element_by_link_text('Sign in').click()
+    browser.get("https://www.luis.ai/")
+    browser.find_element_by_id('id__10').click()
     WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.ID, "idSIButton9")))
     browser.find_element_by_id('i0116').send_keys(config.username)
     browser.find_element_by_id('idSIButton9').click()
