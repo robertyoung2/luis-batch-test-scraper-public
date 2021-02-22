@@ -156,7 +156,6 @@ def batch_tests_results():
                 if intent_name == intent_entity:
                     batch_result.click()
                     model_stats_string = "Model '" + intent_name + "' Statistics"
-                    # put a wait in using 'Model "Intent' Statistics"
                     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//*[text()="%s"]' %
                                                                                     model_stats_string)))
                     tp, tn, fp, fn = confusion_values()
@@ -216,17 +215,20 @@ def get_entity_name(batch_name):
 
 
 def confusion_values():
+    """
+    Gets all the confusion matrix values for the given intent
+    :return:
+    """
 
     results = []
     metrics = ["True Positive", "False Positive", "True Negative", "False Negative"]
 
     def count_rows(current_metric):
         browser.find_element_by_xpath('//span[text()="%s"]' % current_metric).click()
-        time.sleep(3)
+        time.sleep(2)
         grid_elements = browser.find_elements_by_xpath('//div[@aria-rowcount]')
         row_count = int(grid_elements[1].get_attribute("aria-rowcount")) - 1
         return row_count
-
     for metric in metrics:
         results.append(count_rows(metric))
     return results
