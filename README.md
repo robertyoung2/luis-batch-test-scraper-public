@@ -12,8 +12,8 @@ may be needed for obtained other interactions and outputs with the batch testing
 
 There are two core files for configuration and operation of this script:
 
-* config.py
-* variable_names.py
+* [config.py](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/config.py)
+* [variable_names.py](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/variable_names.py)
 
 ### config.py
 
