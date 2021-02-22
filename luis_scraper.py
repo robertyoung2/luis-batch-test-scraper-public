@@ -157,6 +157,7 @@ def batch_tests_results():
                     scores_dict['TN'] = tn
                     scores_dict['FP'] = fp
                     scores_dict['FN'] = fn
+                    scores_dict['F1-Score'] = (tp) / (tp + 0.5*(fp+fn))
 
             except (NoSuchElementException, ValueError):
                 print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
