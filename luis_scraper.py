@@ -18,7 +18,7 @@ browser = webdriver.Chrome(options=option)  # Chrome Driver added to path
 
 def login_luis():
     """
-    Logs in to EU Luis portal using username and password
+    Logs in to Luis portal using username and password
 
     :parameter: config.username is the username var loaded from the config file
     :parameter: config.password is the password var loaded from the config file
@@ -146,12 +146,20 @@ def batch_tests_results():
                 element, score = utterances_string[1:]
                 element = element.strip('()')
                 scores_dict[element] = "=" + score
-                print("Element:", element)
-                print("Score:", score)
+
+                if intent_name == intent_entity:
+                    # TP, TN, FP, FN
+                    batch_result.click()
+                    # put a wait in using 'Model "Intent' Statistics"
+                    time.sleep(3)
+                    tp, tn, fp, fn = confusion_values()
+                    scores_dict['TP'] = tp
+                    scores_dict['TN'] = tn
+                    scores_dict['FP'] = fp
+                    scores_dict['FN'] = fn
+
             except (NoSuchElementException, ValueError):
                 print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
-
-        # TP, TN, FP, FN
 
         df = df.append(scores_dict, ignore_index=True)
         remaining_batch_tests(loaded_batch_tests)
@@ -196,6 +204,24 @@ def get_entity_name(batch_name):
             entity_name += batch_name[i]
             i += 1
     return entity_name
+
+
+def confusion_values():
+
+    results = []
+    metrics = ["True Positive", "False Positive", "True Negative", "False Negative"]
+
+    def count_rows(current_metric):
+        browser.find_element_by_xpath('//span[text()="%s"]' % current_metric).click()
+        time.sleep(3)
+        grid_elements = browser.find_elements_by_xpath('//div[@aria-rowcount]')
+        row_count = int(grid_elements[1].get_attribute("aria-rowcount")) - 1
+        return row_count
+
+    for metric in metrics:
+        results.append(count_rows(metric))
+    print(results)
+    return results
 
 
 def main():
