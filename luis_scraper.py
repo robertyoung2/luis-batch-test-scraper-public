@@ -43,15 +43,18 @@ def login_luis():
 
 
 def authoring_resource():
-
-    WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.XPATH, '//*[text()="Welcome to the Language Understanding Intelligent Service (LUIS)!"]')))
+    WebDriverWait(browser, 15).until(EC.presence_of_element_located(
+        (By.XPATH, '//*[text()="Welcome to the Language Understanding Intelligent Service (LUIS)!"]')))
     browser.find_element_by_xpath('//*[text()="Select subscription"]').click()
-    WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Search subscription"]')))
+    WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Search subscription"]')))
     browser.find_element_by_xpath('//*[@title="%s"]' % config.subscription).click()
-    WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, '//*[text()="Select or create an authoring resource"]')))
+    WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.XPATH, '//*[text()="Select or create an authoring resource"]')))
     browser.find_element_by_xpath('//*[text()="Select or create an authoring resource"]').click()
 
-    WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Select an authoring resource ..."]')))
+    WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Select an authoring resource ..."]')))
     browser.find_element_by_xpath('//*[@placeholder="Select an authoring resource ..."]').click()
     browser.find_element_by_xpath('//*[text()="%s"]' % config.authoring_resource).click()
     browser.find_element_by_xpath('//*[text()="Done"]').click()
@@ -68,13 +71,15 @@ def batch_test_open():
     browser.find_element_by_xpath('//button[text()="%s"]' % config.app_name).click()
 
     try:
-        WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, '//*[text()="How to create an effective LUIS app"]')))
+        WebDriverWait(browser, 10).until(
+            EC.presence_of_element_located((By.XPATH, '//*[text()="How to create an effective LUIS app"]')))
         ActionChains(browser).send_keys(Keys.ESCAPE).perform()
     except:
         print("No intro pop-up")
 
     try:
-        WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, '//*[text()="Upgrade your composite entities"]')))
+        WebDriverWait(browser, 10).until(
+            EC.presence_of_element_located((By.XPATH, '//*[text()="Upgrade your composite entities"]')))
         browser.find_element_by_xpath('//span[text()="Remind me later"]').click()
     except:
         print("No composite entities pop-up")
@@ -82,7 +87,7 @@ def batch_test_open():
     WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, '//span[text()="Test"]')))
     browser.find_element_by_xpath('//span[text()="Test"]').click()
     WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.XPATH, '//span[contains(text(), '
-                                                                                '"Batch testing")]')))
+                                                                                 '"Batch testing")]')))
     browser.find_element_by_xpath('//span[contains(text(), "Batch testing")]').click()
 
 
@@ -92,7 +97,8 @@ def batch_test_run():
 
     :return: none
     """
-    WebDriverWait(browser, 15).until(EC.visibility_of_element_located((By.XPATH, '//span[contains(text(), ''"get_job_information")]')))
+    WebDriverWait(browser, 15).until(
+        EC.visibility_of_element_located((By.XPATH, '//span[contains(text(), ''"get_job_information")]')))
     batch_run_button = browser.find_elements_by_xpath('//span[(text()="Run")]')
     for index, button in enumerate(batch_run_button):
         if index > 0:
@@ -159,6 +165,30 @@ def remaining_batch_tests(loaded_batch_tests):
     with open('remaining_tests.txt', mode='w') as outfile:
         for batch_test in remaining_tests:
             outfile.write("%s\n" % batch_test)
+
+
+# ----------------
+# Helper Functions
+# ----------------
+
+def get_entity_name(batch_name):
+    """
+    Takes the batch test name from the Luis page testing Dataset pane and converts it into a string format
+    which matches the format of the name as an intent in the results panel.
+    Eg. 'get_job_information' -> 'GetJobInformation'
+    :param batch_name: string, form is 'batch_test_name'
+    :return: string, form is 'BatchTestName'
+    """
+    entity_name = ""
+    i = 0
+    while i < len(batch_name):
+        if batch_name[i] == '_':
+            entity_name += batch_name[i + 1].upper()
+            i += 2
+        else:
+            entity_name += batch_name[i]
+            i += 1
+    return entity_name
 
 
 def main():
