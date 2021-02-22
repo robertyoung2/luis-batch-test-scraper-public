@@ -154,10 +154,11 @@ def batch_tests_results():
                 scores_dict[element] = "=" + score
 
                 if intent_name == intent_entity:
-                    # TP, TN, FP, FN
                     batch_result.click()
+                    model_stats_string = "Model '" + intent_name + "' Statistics"
                     # put a wait in using 'Model "Intent' Statistics"
-                    time.sleep(3)
+                    WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH, '//*[text()="%s"]' %
+                                                                                    model_stats_string)))
                     tp, tn, fp, fn = confusion_values()
                     scores_dict['TP'] = tp
                     scores_dict['TN'] = tn
