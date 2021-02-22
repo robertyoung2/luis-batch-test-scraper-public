@@ -141,9 +141,14 @@ def batch_tests_results():
 
         for intent_entity in intent_entity_titles:
             try:
-                xpath_string = '//*[contains(@title, "%s")]' % intent_entity
-                batch_result = browser.find_element_by_xpath(xpath_string)
-                utterances_string = batch_result.text.split()
+                xpath_string = '//*[contains(@title, "%s")]' % (intent_entity + ' (')
+                batch_result = browser.find_elements_by_xpath(xpath_string)
+                # nested loop, but over very small n (~5 max)
+                for item in batch_result:
+                    if item.get_attribute("title").split()[0] == intent_entity:
+                        utterances_string = item.text.split()
+                        batch_result = item
+
                 element, score = utterances_string[1:]
                 element = element.strip('()')
                 scores_dict[element] = "=" + score
@@ -158,11 +163,12 @@ def batch_tests_results():
                     scores_dict['TN'] = tn
                     scores_dict['FP'] = fp
                     scores_dict['FN'] = fn
-                    scores_dict['F1-Score'] = tp / (tp + 0.5*(fp+fn))
+                    scores_dict['F1-Score'] = round(tp / (tp + 0.5*(fp+fn)), 2)
 
             except (NoSuchElementException, ValueError):
                 print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
-        scores_dict['DateTime'] = datetime.date(datetime.now())
+
+        scores_dict['Date'] = datetime.date(datetime.now())
         df = df.append(scores_dict, ignore_index=True)
         remaining_batch_tests(loaded_batch_tests)
         back.click()
@@ -222,7 +228,6 @@ def confusion_values():
 
     for metric in metrics:
         results.append(count_rows(metric))
-    print(results)
     return results
 
 
