@@ -1,5 +1,6 @@
 import config
 import time
+from datetime import datetime
 import pandas as pd
 from variable_names import list_of_headers, intent_entity_titles, batch_test_set
 from selenium import webdriver
@@ -157,11 +158,11 @@ def batch_tests_results():
                     scores_dict['TN'] = tn
                     scores_dict['FP'] = fp
                     scores_dict['FN'] = fn
-                    scores_dict['F1-Score'] = (tp) / (tp + 0.5*(fp+fn))
+                    scores_dict['F1-Score'] = tp / (tp + 0.5*(fp+fn))
 
             except (NoSuchElementException, ValueError):
                 print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
-
+        scores_dict['DateTime'] = datetime.date(datetime.now())
         df = df.append(scores_dict, ignore_index=True)
         remaining_batch_tests(loaded_batch_tests)
         back.click()
