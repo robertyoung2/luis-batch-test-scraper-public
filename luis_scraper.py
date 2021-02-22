@@ -130,9 +130,13 @@ def batch_tests_results():
         title_batch_test = browser.find_element_by_xpath('//span[contains(text(), "Dataset")]').text.split()[1][1:-1]
         loaded_batch_tests.append(title_batch_test)
         scores_dict['Intent'] = title_batch_test
-        # utterances = browser.find_element_by_xpath('//*[contains(text(), "utterances passed")]').text[1:-1].split()
-        # utterances = utterances[0].split('/')[1]
-        utterances = 5
+
+        batch_name = title_batch_test
+        batch_name = batch_name.capitalize()
+        intent_name = get_entity_name(batch_name)
+        utterances_string = browser.find_element_by_xpath('//*[contains(@title, "%s")]' % intent_name)
+        utterances_string = utterances_string.text.split()
+        utterances = utterances_string[-1].split('/')[1][:-1]
         scores_dict['Size'] = utterances
 
         for intent_entity in intent_entity_titles:
