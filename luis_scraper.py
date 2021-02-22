@@ -3,7 +3,6 @@ import time
 import pandas as pd
 from variable_names import list_of_headers, intent_entity_titles, batch_test_set
 from selenium import webdriver
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,8 +12,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 option = webdriver.ChromeOptions()
 option.add_argument(" - incognito")
-# browser = webdriver.Chrome(executable_path=config.home_path, options=option)
-browser = webdriver.Chrome(options=option)
+# browser = webdriver.Chrome(executable_path=config.home_path, options=option)  # Custom Path
+browser = webdriver.Chrome(options=option)  # Chrome Driver added to path
 
 
 def login_luis():
@@ -141,19 +140,23 @@ def batch_tests_results():
 
         for intent_entity in intent_entity_titles:
             try:
-                xpath_string = '//*[@title="' + intent_entity + '"]'
+                xpath_string = '//*[contains(@title, "%s")]' % intent_entity
                 batch_result = browser.find_element_by_xpath(xpath_string)
-                element, score = batch_result.text.split("(")
-                element = element.strip()
-                scores_dict[element] = "=" + (score[:-1])
+                utterances_string = batch_result.text.split()
+                element, score = utterances_string[1:]
+                element = element.strip('()')
+                scores_dict[element] = "=" + score
+                print("Element:", element)
+                print("Score:", score)
             except (NoSuchElementException, ValueError):
                 print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
+
+        # TP, TN, FP, FN
 
         df = df.append(scores_dict, ignore_index=True)
         remaining_batch_tests(loaded_batch_tests)
         back.click()
         time.sleep(1)
-        break
     df.to_csv("batch_test_results.csv", index=False)
 
 
