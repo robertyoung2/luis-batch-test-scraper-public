@@ -8,6 +8,11 @@ Python script integrated with the Selenium Webdriver which can previously upload
 to a csv for further data analysis and interrogation. This script has been tailored to my own needs, so modification
 may be needed for obtained other interactions and outputs with the batch testing Dashboard. 
 
+In its current form, the scraper works with a batch test for each intent. For example, if your intents are [GetJobInformation, EmployeeFeedback, ApplyForJob] you should have batch tests with utterances which test each of these intents individually:
+
+![Batch Testing Panel](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/images/batch_test_panel.png)
+
+
 ## Configuration and Variable files
 
 There are two core files for configuration and operation of this script:
@@ -22,8 +27,10 @@ contains four variables to be defined. These are:
 
 * username: the account username for Luis, as a string, for example "billgates@microsoft.com".
 * password: the associated password for the username, as a string, for example "i-love-cortana".
-* home_path: defines the user path on their local machine to the chrome web driver, for example "~/chromedriver".
+* home_path: defines the user path on their local machine to the [Chrome web driver](https://chromedriver.chromium.org/downloads), for example "~/chromedriver".
 * app-name: the name of the Luis app to be loaded on the "My Apps" page in Luis, for example "myapp_v01".
+* subscription: the azure subscription you wish to use (handles pop-up prompt if it appears).
+* authoring-resource: the resource name for [authoring](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/luis-how-to-azure-subscription) and query prediction runtime resources.
 
 ### variable_names.py 
 
