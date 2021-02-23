@@ -163,7 +163,7 @@ def batch_tests_results():
                     scores_dict['TN'] = tn
                     scores_dict['FP'] = fp
                     scores_dict['FN'] = fn
-                    scores_dict['F1-Score'] = round(tp / (tp + 0.5*(fp+fn)), 2)
+                    scores_dict['F1-Score'] = round(tp / (tp + 0.5 * (fp + fn)), 2)
 
             except (NoSuchElementException, ValueError):
                 print(intent_entity, "not in batch test, continuing to iterate over Intents provided")
@@ -173,7 +173,7 @@ def batch_tests_results():
         remaining_batch_tests(loaded_batch_tests)
         back.click()
         time.sleep(1)
-    df.to_csv("batch_test_results.csv", index=False)
+    df.to_csv("sample_batch_test_results.csv", index=False)
 
 
 def remaining_batch_tests(loaded_batch_tests):
@@ -229,6 +229,7 @@ def confusion_values():
         grid_elements = browser.find_elements_by_xpath('//div[@aria-rowcount]')
         row_count = int(grid_elements[1].get_attribute("aria-rowcount")) - 1
         return row_count
+
     for metric in metrics:
         results.append(count_rows(metric))
     return results
