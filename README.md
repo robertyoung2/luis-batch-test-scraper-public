@@ -113,6 +113,10 @@ execution).
 * Line [142](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/6796d0777e8a94747156f9fd22c217797bbba151/luis_scraper.py#L142) -> [166](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/6796d0777e8a94747156f9fd22c217797bbba151/luis_scraper.py#L166) will need modification. Currently this calculates the TP, TN, FP, FN on an intent batch test basis (as discussed in [Luis Batch Test Results Scraper](https://github.com/robertyoung2/luis-batch-test-scraper-public#luis-batch-test-results-scraper)). You will need to re-write the dictionary format and loop so that for your single batch test which contains all intents you cycle through each intent and entity, one by one, and record the TP, TN, FP  and FN scores. 
 * Function [def get_entity_name()](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/6796d0777e8a94747156f9fd22c217797bbba151/luis_scraper.py#L197) current generates the entity name to match based on the batch test name. If you are running a combined test, this functionality is no longer needed, and you can comment out/remove as suits best. 
 
+### Requirements
+
+The Python requirements for this project can be found in [requirements.txt](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/requirements.txt)
+
 ## Known Issues/Bugs
 
 * Timeout error if webpage does not load - add logic to reload current page and try step again.
