@@ -10,7 +10,10 @@ may be needed for obtained other interactions and outputs with the batch testing
 
 In its current form, the scraper works with a batch test for each intent. For example, if your intents are [GetJobInformation, EmployeeFeedback, ApplyForJob] you should have batch tests with utterances which test each of these intents individually:
 
-![Batch Testing Panel](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/images/batch_test_panel.png)
+![Batch Testing Panel](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/images/batch_test_panel.png Batch Test Panel and Tests)
+
+![Intent Batch Test Results](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/images/getjobinfo_results.png Intent Batch Test Results)
+
 
 
 ## Configuration and Variable files
