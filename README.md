@@ -83,7 +83,9 @@ Function to run all the uploaded JSON batch tests. Executes the following steps:
 ### batch_tests_results()
 
 This is the core function within the script. It accesses each of the batch tests results, and extracts the information
-within the intent results and adds it to a dataframe, which on completion is saved as a csv of all results. Executes 
+within the intent results and adds it to a dataframe, which on completion is saved as a csv of all results. A sample csv of results may be seen in [sample_batch_test_results.csv](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/sample_batch_test_results.csv). 
+
+Executes 
 the following steps:
 
 * Initialises the dataframe to save results to, and a list to track the names of batch tests with generated results.
