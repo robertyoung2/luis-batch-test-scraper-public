@@ -115,7 +115,7 @@ execution).
 
 ### Requirements
 
-The Python requirements for this project can be found in [requirements.txt](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/requirements.txt)
+The Python requirements for this project can be found in [requirements.txt](https://github.com/robertyoung2/luis-batch-test-scraper-public/blob/master/requirements.txt).
 
 ## Known Issues/Bugs
 
